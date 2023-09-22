@@ -6,19 +6,32 @@ export default function ToDo() {
    const [categoria, setCategoria] = useState("");
    const [marca, setMarca] = useState("");
    const [preco, setPreco] = useState("");
+   const [imagem, setImagem] = useState("");
    const [lista, setLista ] = useState([]);
    const [id,setId] = useState(1);
+
     const salvar =(e) =>{
         e.preventDefault();
         setLista([...lista, {
-                categoria: categoria, marca: marca, preco: preco,
+                categoria: categoria, marca: marca, preco: preco, imagem: imagem,
                 id: id
         }]);
         setId(id + 1);
         setCategoria("");
         setMarca("");
         setPreco("");
+        setImagem("");
     };
+
+    const remover = (id) => {
+        const auxLista = [];
+        lista.map((lista) => {
+            if (lista.id !== id) {
+                auxLista.push(lista);
+            }
+        });
+        setLista(auxLista);
+    }
 
     return (
         <div>
@@ -39,20 +52,31 @@ export default function ToDo() {
             onChange={(e)=>{ setMarca(e.target.value)}}/>
             
 
-            <p>Preco:</p>
+            <p>Preço:</p>
                 &emsp;
             <input value={preco} type="text"
             onChange={(e)=>{ setPreco(e.target.value)}}/>
                 &emsp;
+
+                <p>Procurar Imagem:</p>
+                &emsp;
+            <input value={imagem} type="text"
+            onChange={(e)=>{ setImagem(e.target.value)}}/>
+                &emsp;
             
-            <button>ADD</button> 
+            <button>ADD</button>    
+           <select onChange={(e) => { setImagem(e.target.value) }}>
+           </select>
+           
            </form> 
-           </div>     
+           </div>   
             { lista.map((ativ)=>
             <div key= {ativ.id}>
                 <p>Categoria:{ativ.categoria}</p>
                 <p>Marca:{ativ.marca}</p>
                 <p>Preço:{ativ.preco}</p>
+                <p><img src={ativ.imagem} alt=""/></p>
+                <button onClick={() => remover(ativ.id)}>Remover</button>
             </div>
             )}  
         </div>
