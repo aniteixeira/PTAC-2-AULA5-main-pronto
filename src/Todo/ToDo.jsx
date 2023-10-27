@@ -4,15 +4,18 @@ import "./style.css"
 
 
 export default function ToDo() {
-   const listaLocalStorage = localStorage.getItem("Lista");
+   const listaLocalStorage = JSON.parse(localStorage.getItem("Lista"));
    const [categoria, setCategoria] = useState("");
    const [marca, setMarca] = useState("");
    const [preco, setPreco] = useState("");
    const [imagem, setImagem] = useState("");
-   const [lista, setLista ] = useState([]);
-   const [id,setId] = useState(1);
+   const [lista, setLista ] = useState(listaLocalStorage || []);
+   const [id,setId] = useState(listaLocalStorage[listaLocalStorage.length - 1]?.id + 1 || 1 );
 
- useEffect(() => { localStorage.setItem("Lista", JSON.stringify(lista))}, [lista]);
+
+ useEffect(() => {
+  localStorage.setItem("Lista", JSON.stringify(lista));
+  }, [lista]);
 
 
     const salvar =(e) =>{
@@ -76,9 +79,10 @@ export default function ToDo() {
            
            </form> 
            </div>   
-            { lista.map((ativ)=>
+            {lista.map((ativ)=>
             <div key= {ativ.id}>
-                <p>Categoria:{ativ.categoria}</p>
+                <Link to={'/detalhe/${ativ.id}'}>
+                <p>Categoria:{ativ.categoria}</p></Link>
                 <p>Marca:{ativ.marca}</p>
                 <p>Preço:{ativ.preco}</p>
                 <p><img src={ativ.imagem} alt=""/></p>
