@@ -1,10 +1,19 @@
 import { useParams } from "react-router-dom";
+import Card from '../Components/Card';
 
 export default function Detalhe(){
 const {id} = useParams();
-return(
-<div>
-    <h1>Olá {id}</h1>
-</div>
-      );
+const lista = JSON.parse( localStorage.getItem("Lista"));
+
+const atividade = lista.filter( (objeto) => {
+  if(objeto.id == id){
+    return objeto;
+}
+return null;
+})
+
+return (
+    <Card atividade={atividade[0]} />
+);
+
 }
